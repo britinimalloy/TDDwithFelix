@@ -51,5 +51,11 @@ namespace TDDwithFelix_Tests
         {
             Assert.AreEqual(TDDwithFelix.Program.AtoI("840"), 840);
         }
+
+        [TestMethod()]
+        public void AtoITestMultipleDigit()
+        {
+            Assert.AreEqual(TDDwithFelix.Program.AtoI("94273"), 94273);
+        }
     } 
 } 
