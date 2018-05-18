@@ -57,5 +57,12 @@ namespace TDDwithFelix_Tests
         {
             Assert.AreEqual(TDDwithFelix.Program.AtoI("94273"), 94273);
         }
+
+        [TestMethod()]
+        public void AtoITestWeirdCharacters()
+        {
+            Assert.AreEqual(TDDwithFelix.Program.AtoI("12a"), 0);
+            Assert.AreEqual(TDDwithFelix.Program.AtoI("a+b=c"), 0);
+        }
     } 
 } 

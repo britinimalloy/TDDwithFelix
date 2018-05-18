@@ -27,6 +27,9 @@ namespace TDDwithFelix
 
                 value = value - '0';
 
+                if (value < 0 || value > 9)
+                    return 0;
+
                 total = (total * 10) + value;
             }
 
