@@ -20,10 +20,20 @@ namespace TDDwithFelix
             number = number.Trim();
 
             int total = 0;
+            int negative = 1;
 
             for (int index = 0; index < number.Length; index++)
             {
                 int value = number[index];
+
+                if (value == ',')
+                    continue;
+
+                if (value == '-' && index == 0)
+                {
+                    negative = -1;
+                    continue;
+                }
 
                 value = value - '0';
 
@@ -33,7 +43,7 @@ namespace TDDwithFelix
                 total = (total * 10) + value;
             }
 
-            return total;
+            return negative * total;
         }
     }
 }

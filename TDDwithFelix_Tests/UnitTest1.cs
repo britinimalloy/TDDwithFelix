@@ -63,6 +63,21 @@ namespace TDDwithFelix_Tests
         {
             Assert.AreEqual(TDDwithFelix.Program.AtoI("12a"), 0);
             Assert.AreEqual(TDDwithFelix.Program.AtoI("a+b=c"), 0);
+            Assert.AreEqual(TDDwithFelix.Program.AtoI("$3.99"), 0);
+            Assert.AreEqual(TDDwithFelix.Program.AtoI("79,800"), 79800);
+        }
+        [TestMethod()]
+        public void AtoITestNegatives()
+        {
+            Assert.AreEqual(TDDwithFelix.Program.AtoI("-78"), -78);
+            Assert.AreEqual(TDDwithFelix.Program.AtoI("-78-10"), 0);
+            Assert.AreEqual(TDDwithFelix.Program.AtoI("10-5"), 0);
+        }
+
+        [TestMethod()]
+        public void AtoITestSomething()
+        {
+            //
         }
     } 
 } 
