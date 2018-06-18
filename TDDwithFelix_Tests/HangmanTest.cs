@@ -96,5 +96,13 @@ namespace TDDwithFelix_Tests
         }
 
         // 
+        // How about a method which returns '_' for an unguessed location in the word, and the letter for a guessed one?
+        //[TestMethod]
+        //public void TestUnderscores()
+        //{
+        //    String result = h.Guessed();
+
+        //    Asset.IsTrue(String.CompareOrdinal(result, "_____"));
+        //}
     }
 }
