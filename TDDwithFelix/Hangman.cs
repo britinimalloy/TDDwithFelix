@@ -8,25 +8,66 @@ namespace TDDwithFelix
 {
     public class Hangman
     {
-        // Add some comments here
-        public string Word { get; set; }
-        public int Limit { get; set; }
-        public int Count { get; set; } // Seems vague?
+        /* 
+         * Set some variables that will be used to play the hangman game and 
+         * allow for testing of the various methods.
+         */
+        private string word { get; set; }
+        private int limit { get; set; }
+
+        public int GuessCount { get; set; }
         public int WrongGuessCount { get; set; }
+
+        Boolean [] guessedCorrectly = null;
+
+        private void ResetGuessedArray()
+        {
+            for (int i = 0; i < word.Length; i++)
+                guessedCorrectly[i] = false;
+        }
+
+        public string Word
+        {
+            get
+            {
+                return word;
+            }
+            set
+            {
+                word = CaseInsensitive(value);
+                guessedCorrectly = new Boolean[word.Length];
+                ResetGuessedArray();
+            }
+        }
+
+        public int Limit
+        {
+            get
+            {
+                if (limit == 0)
+                {
+                    limit = Word.Length;
+                }
+                return limit;
+            }
+            set
+            {
+                limit = value;
+            }
+        }
 
         public bool Foo()
         {
             return false;
         }
 
-        // Why is this a public?
-        public string CaseInsensitive(string word)
+        private string CaseInsensitive(string word)
+
         {
             return word.ToLower();
         }
 
-        // I like that you are using the "Guess" in your code, perhaps IsValidGuess, rather than IsInWord?
-        public bool IsInWord(char character)
+        public bool IsValidGuess(char character)
         {
             if (Word.Contains(character))
             {
@@ -38,7 +79,7 @@ namespace TDDwithFelix
 
         public bool GuessLimitReached()
         {
-            if (Count >= Limit)
+            if (GuessCount >= Limit)
             {
                 return true;
             }
@@ -49,5 +90,48 @@ namespace TDDwithFelix
         {
             return WrongGuessCount++;
         }
+
+        /// <summary>
+        /// This method is setting up a string builder that will either
+        /// show the correct letter in the proper place when it's been
+        /// correctly guessed, or an '_' if it has not.
+        /// </summary>
+        /// <returns></returns>
+        public string Guessed()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < this.Word.Length; i++)
+            {
+                if (this.guessedCorrectly[i])
+                    sb.Append(this.Word[i]);
+                else
+                    sb.Append('_');
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// This method returns a true (and sets the character in Word's 
+        /// corresponding array to true for having been guessed)
+        /// </summary>
+        /// <param name="guess"></param>
+        /// <returns></returns>
+        public bool MakeGuess(char guess)
+        {
+            guess = Char.ToLower(guess);
+            bool result = false;
+
+            for (int i = 0; i < word.Length; i++)
+            {
+                if (this.Word[i] == guess )
+                {
+                    guessedCorrectly[i] = true;
+                    result = true;
+                }
+            }
+            return result;
+        }
+
     }
 }

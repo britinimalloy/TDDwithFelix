@@ -16,7 +16,7 @@ namespace TDDwithFelix_Tests
 
         Hangman h = new Hangman();
         // Create:
-        string expectedWord = "Hello";
+        string expectedWord = "hello";
         int expectedWrongCount = 4;
 
         [TestInitialize]
@@ -41,38 +41,48 @@ namespace TDDwithFelix_Tests
             Assert.IsFalse(h.Word == "cat");
         }
 
+        /// <summary>
+        /// Testing to make sure the word set can be recognized
+        /// as the correct word, regardless of case.
+        /// </summary>
         [TestMethod]
         public void TestWordCase()
         {
             h.Word = "Cat";
 
-            h.Word = h.CaseInsensitive(h.Word);
-
             // Asserts - that it's the word we set
             Assert.IsTrue(h.Word == "cat");
         }
 
-        // 2) Is character in the word? 
+        /// <summary>
+        /// Testing to make sure a correct letter guess is 
+        /// returned as a correct guess.
+        /// </summary>
         [TestMethod]
         public void TestIfInWord()
         {
             // Asserts:
-            Assert.IsTrue(h.IsInWord('l'));
+            Assert.IsTrue(h.IsValidGuess('l'));
         }
 
-        // 3) Limit on the number of guesses 
+        /// <summary>
+        /// Testing to ensure the limit of guesses has not 
+        /// gone over the expected count.
+        /// </summary>
         [TestMethod]
         public void TestIfGuess6ReachedLimit()
         {
-            h.Count = 6;
+            h.GuessCount = 6;
 
             // Asserts:
             Assert.IsFalse(h.GuessLimitReached());
         }
 
-
-        // 3) Limit on the number of guesses
-        //     increment "Wrong" guess count
+        /// <summary>
+        /// Testing to make sure that when we have 3 wrong 
+        /// guesses already, and guess incorrectly again, that
+        /// the count of incorrect guesses increments by 1.
+        /// </summary>
         [TestMethod]
         public void TestWrongGuessCountIncremented()
         {
@@ -89,20 +99,95 @@ namespace TDDwithFelix_Tests
         [TestMethod]
         public void TestIfGuess7ReachedLimit()
         {
-            h.Count = 7;
+            h.GuessCount = 7;
 
             // Asserts:
             Assert.IsTrue(h.GuessLimitReached());
         }
-
-        // 
+      
         // How about a method which returns '_' for an unguessed location in the word, and the letter for a guessed one?
-        //[TestMethod]
-        //public void TestUnderscores()
-        //{
-        //    String result = h.Guessed();
+        [TestMethod]
+        public void TestUnderscores()
+        {
+            String result = h.Guessed();
 
-        //    Asset.IsTrue(String.CompareOrdinal(result, "_____"));
-        //}
+            Assert.AreEqual(String.CompareOrdinal(result, "_____"),0);
+        }
+
+        /// <summary>
+        /// Testing to see if a correct letter guess shows the 
+        /// expected correct visual representation of the word
+        /// </summary>
+        [TestMethod]
+        public void TestGuess()
+        {
+            h.MakeGuess('l');
+
+            String result = h.Guessed();
+
+            Assert.AreEqual(String.CompareOrdinal(result, "__ll_"), 0);
+        }
+
+        /// <summary>
+        /// Testing to make sure a wrong letter guess shows all
+        /// underscores for the visual representation of the 
+        /// word
+        /// </summary>
+        [TestMethod]
+        public void TestWrongGuess()
+        {
+            h.MakeGuess('q');
+
+            String result = h.Guessed();
+
+            Assert.AreEqual(String.CompareOrdinal(result, "_____"), 0);
+        }
+
+        /// <summary>
+        /// Test whether or not a capital letter is recognized
+        /// as a correct guess
+        /// </summary>
+        [TestMethod]
+        public void TestCapitalGuess()
+        {
+            h.MakeGuess('L');
+
+            String result = h.Guessed();
+
+            Assert.AreEqual(String.CompareOrdinal(result, "__ll_"), 0);
+        }
+
+        /// <summary>
+        /// This method tests to make sure that when we guess
+        /// a correct letter, we get the expected true result.
+        /// </summary>
+        [TestMethod]
+        public void TestMakeGuessTrue()
+        {
+            Assert.IsTrue(h.MakeGuess('L'));
+        }
+
+        /// <summary>
+        /// This test method tests whether we get the expected
+        /// false when we guess a letter that is not contained
+        /// </summary>
+        [TestMethod]
+        public void TestMakeGuessFalse()
+        {
+            Assert.IsFalse(h.MakeGuess('Q'));
+        }
+
+        /// <summary>
+        /// Test if for a given word, we can get the length,
+        /// set that as the guess count limit
+        /// </summary>
+        [TestMethod]
+        public void TestGetLimit()
+        {
+            h.Limit = 0;
+            h.Word = "hello";
+
+            Assert.AreEqual(h.Word.Length, h.Limit);
+        }
     }
 }
