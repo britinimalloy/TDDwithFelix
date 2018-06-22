@@ -8,10 +8,11 @@ namespace TDDwithFelix
 {
     public class Hangman
     {
-        // Add some comments here
+        /* 
+         * Set some variables that will be used to play the hangman game and 
+         * allow for testing of the various methods.
+         */
         private string word { get; set; }
-        private char[] lettersGuessed { get; set; }
-        private char[] letterPlacement { get; set; }
         private int limit { get; set; }
 
         public int GuessCount { get; set; } // Seems vague?
