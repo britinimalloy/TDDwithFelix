@@ -15,7 +15,7 @@ namespace TDDwithFelix
         private string word { get; set; }
         private int limit { get; set; }
 
-        public int GuessCount { get; set; } // Seems vague?
+        public int GuessCount { get; set; }
         public int WrongGuessCount { get; set; }
 
         Boolean [] guessedCorrectly = null;
