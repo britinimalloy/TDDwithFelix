@@ -104,7 +104,7 @@ namespace TDDwithFelix_Tests
             // Asserts:
             Assert.IsTrue(h.GuessLimitReached());
         }
-
+      
         // How about a method which returns '_' for an unguessed location in the word, and the letter for a guessed one?
         [TestMethod]
         public void TestUnderscores()

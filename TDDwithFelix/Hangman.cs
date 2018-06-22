@@ -62,6 +62,7 @@ namespace TDDwithFelix
         }
 
         private string CaseInsensitive(string word)
+
         {
             return word.ToLower();
         }
