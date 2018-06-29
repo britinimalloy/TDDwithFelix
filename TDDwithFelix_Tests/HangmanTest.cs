@@ -104,14 +104,14 @@ namespace TDDwithFelix_Tests
             // Asserts:
             Assert.IsTrue(h.GuessLimitReached());
         }
-      
+
         // How about a method which returns '_' for an unguessed location in the word, and the letter for a guessed one?
         [TestMethod]
         public void TestUnderscores()
         {
             String result = h.Guessed();
 
-            Assert.AreEqual(String.CompareOrdinal(result, "_____"),0);
+            Assert.AreEqual(String.CompareOrdinal(result, "_____"), 0);
         }
 
         /// <summary>
@@ -189,5 +189,79 @@ namespace TDDwithFelix_Tests
 
             Assert.AreEqual(h.Word.Length, h.Limit);
         }
+
+        [TestMethod]
+        public void TestAtoI()
+        {
+            int myNumber = 0;
+            char[] letterArray = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+            for (int ii = 0; ii < letterArray.Length; ii++)
+            {
+                myNumber = h.AtoI(letterArray[ii]);
+                Assert.IsTrue(myNumber == ii);
+            }
+        }
+
+        /// <summary>
+        /// What if someone guesses the same correct letter twice?
+        /// </summary>
+        [TestMethod]
+        public void TestAlreadyGuessedAnotherCorrectLetter()
+        {
+            h.WrongGuessCount = 0;
+
+            h.MakeAnotherGuess('Q');
+
+            h.MakeAnotherGuess('O');
+            Assert.IsFalse(h.AlreadyGuessed);
+
+            h.MakeAnotherGuess('l');
+
+            h.MakeAnotherGuess('h');
+
+            h.MakeAnotherGuess('o');
+            Assert.IsTrue(h.AlreadyGuessed);
+            Assert.IsTrue(h.WrongGuessCount == 1);
+        }
+
+        [TestMethod]
+        public void TestAlreadyGuessedCorrectLetter()
+        {
+            h.WrongGuessCount = 0;
+
+            h.MakeGuess('Q');
+
+            h.MakeGuess('O');
+            Assert.IsFalse(h.AlreadyGuessed);
+
+            h.MakeGuess('l');
+
+            h.MakeGuess('h');
+
+            h.MakeGuess('o');
+            //Assert.IsTrue(h.AlreadyGuessed);
+            //Assert.IsTrue(h.WrongGuessCount == 1);
+        }
+
+        // TODO:
+        /// <summary>
+        /// What if someone guesses the same wrong letter twice?
+        /// </summary>
+        //[TestMethod]
+        //public void TestAlreadyGuessedWrongLetter()
+        //{
+        //    h.WrongGuessCount = 0;
+
+        //    h.MakeGuess('Q');
+        //    Assert.IsFalse(h.AlreadyGuessed);
+
+        //    h.MakeGuess('o');
+
+        //    h.MakeGuess('l');
+
+        //    h.MakeGuess('Q');
+        //    Assert.IsTrue(h.AlreadyGuessed);
+        //}
     }
 }

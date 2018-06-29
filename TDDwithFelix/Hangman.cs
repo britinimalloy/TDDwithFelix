@@ -12,18 +12,25 @@ namespace TDDwithFelix
          * Set some variables that will be used to play the hangman game and 
          * allow for testing of the various methods.
          */
+        private readonly int guessedAlreadyLength = 26;
         private string word { get; set; }
         private int limit { get; set; }
+        private bool alreadyGuessed { get; set; }
+        private Boolean[] _alreadyGuessed { get; set; }
 
         public int GuessCount { get; set; }
         public int WrongGuessCount { get; set; }
-
-        Boolean [] guessedCorrectly = null;
+        
+        Boolean [] letterGuessed = null;
 
         private void ResetGuessedArray()
         {
             for (int i = 0; i < word.Length; i++)
-                guessedCorrectly[i] = false;
+                letterGuessed[i] = false;
+            for (int ii = 0; ii < guessedAlreadyLength; ii++)
+            {
+                _alreadyGuessed[ii] = false;
+            }
         }
 
         public string Word
@@ -35,7 +42,8 @@ namespace TDDwithFelix
             set
             {
                 word = CaseInsensitive(value);
-                guessedCorrectly = new Boolean[word.Length];
+                letterGuessed = new Boolean[word.Length];
+                _alreadyGuessed = new Boolean[guessedAlreadyLength];
                 ResetGuessedArray();
             }
         }
@@ -53,6 +61,18 @@ namespace TDDwithFelix
             set
             {
                 limit = value;
+            }
+        }
+
+        public bool AlreadyGuessed
+        {
+            get
+            {
+                return alreadyGuessed;
+            }
+            set
+            {
+                alreadyGuessed = value;
             }
         }
 
@@ -88,7 +108,8 @@ namespace TDDwithFelix
 
         public int IncrementWrongGuessCount()
         {
-            return WrongGuessCount++;
+            WrongGuessCount++;
+            return WrongGuessCount;
         }
 
         /// <summary>
@@ -103,7 +124,7 @@ namespace TDDwithFelix
 
             for (int i = 0; i < this.Word.Length; i++)
             {
-                if (this.guessedCorrectly[i])
+                if (this.letterGuessed[i])
                     sb.Append(this.Word[i]);
                 else
                     sb.Append('_');
@@ -115,23 +136,64 @@ namespace TDDwithFelix
         /// This method returns a true (and sets the character in Word's 
         /// corresponding array to true for having been guessed)
         /// </summary>
-        /// <param name="guess"></param>
+        /// <param name="letterToGuess"></param>
         /// <returns></returns>
-        public bool MakeGuess(char guess)
+        public bool MakeGuess(char letterToGuess)
         {
-            guess = Char.ToLower(guess);
+            letterToGuess = Char.ToLower(letterToGuess);
             bool result = false;
 
-            for (int i = 0; i < word.Length; i++)
+            if (IsValidGuess(letterToGuess))
             {
-                if (this.Word[i] == guess )
+                for (int characterInWord = 0; characterInWord < word.Length; characterInWord++)
                 {
-                    guessedCorrectly[i] = true;
-                    result = true;
+                    if (this.Word[characterInWord] == letterToGuess)
+                    {  // find where the letter correctly guessed is in the word
+                        letterGuessed[characterInWord] = true;
+                        
+                        result = true;
+                        //return true;
+                    }
+                    result = false;
+                }
+            }
+
+            return result;
+        }
+
+        public bool MakeAnotherGuess(char letterToGuess)
+        {
+            letterToGuess = Char.ToLower(letterToGuess);
+            bool result = false;
+            alreadyGuessed = false;
+
+            if (IsValidGuess(letterToGuess))
+            {
+                for (int characterInWord = 0; characterInWord < word.Length; characterInWord++)
+                {
+                    if (this.Word[characterInWord] == letterToGuess)
+                    {  // if the letter guessed is correct
+                        if (letterGuessed[characterInWord] == true)
+                        {
+                            alreadyGuessed = true;
+                            WrongGuessCount = IncrementWrongGuessCount();
+                            return false;
+                        }
+                        else
+                        {
+                            letterGuessed[characterInWord] = true;
+                            result = true;
+                        }
+                    }
                 }
             }
             return result;
         }
 
+        public int AtoI(char letter)
+        {
+            int number = letter - 'a';
+            return number;
+        }
     }
 }
